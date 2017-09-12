@@ -27,7 +27,7 @@ public class PdfViewer extends AppCompatActivity {
 
         mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.loadUrl("file:///android_asset/pdfviewer/index.html");
+        mWebView.loadUrl("file:///android_asset/pdf-js-1.8/web/viewer.html");
     }
 
     @Override
