@@ -2026,14 +2026,23 @@ var PDFViewerApplication = {
   }
 };
 var validateFileURL;
-var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io'];
+var HOSTED_VIEWER_ORIGINS = [
+  'null',
+  'file://',
+  'http://mozilla.github.io',
+  'https://mozilla.github.io',
+  'http://cdn.mozilla.net',
+  'https://cdn.mozilla.net'
+];
 validateFileURL = function validateFileURL(file) {
   try {
     var viewerOrigin = new URL(window.location.href).origin || 'null';
+    console.log("viewerOrigin: " + viewerOrigin); // TODO: remove debug logs
     if (HOSTED_VIEWER_ORIGINS.indexOf(viewerOrigin) >= 0) {
       return;
     }
     var fileOrigin = new URL(file, window.location.href).origin;
+    console.log("fileOrigin: " + fileOrigin); // TODO: remove debug logs
     if (fileOrigin !== viewerOrigin) {
       throw new Error('file origin does not match viewer\'s');
     }

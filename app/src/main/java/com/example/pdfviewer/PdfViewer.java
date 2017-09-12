@@ -3,10 +3,16 @@ package com.example.pdfviewer;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class PdfViewer extends AppCompatActivity {
+
+    private static final String TAG = PdfViewer.class.getSimpleName();
 
     private WebView mWebView;
 
@@ -27,7 +33,22 @@ public class PdfViewer extends AppCompatActivity {
 
         mWebView.getSettings().setBuiltInZoomControls(true);
         mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.loadUrl("file:///android_asset/pdf-js-1.8/web/viewer.html");
+
+        final String viewerUrl = "file:///android_asset/pdf-js-1.8/web/viewer.html";
+        final String localPdfUrl = "file:///android_asset/SamplePDFFile_5mb.pdf";
+        final String onlinePdfUrl = "https://cdn.mozilla.net/pdfjs/helloworld.pdf";
+        final String toBeEncoded = onlinePdfUrl;
+
+        String encodedUrl = "";
+        try {
+            encodedUrl = URLEncoder.encode(toBeEncoded, "UTF-8");
+        } catch (UnsupportedEncodingException pE) {
+            Log.e(TAG, "Cannot encode URL: " + toBeEncoded, pE);
+        }
+
+        final String toBeLoaded = viewerUrl + "?file=" + encodedUrl;
+        Log.e(TAG, "Loading URL: " + toBeLoaded);
+        mWebView.loadUrl(toBeLoaded);
     }
 
     @Override
