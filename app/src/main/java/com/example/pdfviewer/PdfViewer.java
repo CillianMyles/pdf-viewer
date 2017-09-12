@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Locale;
 
 public class PdfViewer extends AppCompatActivity {
 
@@ -32,7 +34,35 @@ public class PdfViewer extends AppCompatActivity {
         }
 
         mWebView.getSettings().setBuiltInZoomControls(true);
-        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                String printable = String.format(Locale.ENGLISH,
+                        "\"%s\", source: %s (%d)",
+                        consoleMessage.message(),
+                        consoleMessage.sourceId(),
+                        consoleMessage.lineNumber()
+                );
+                switch (consoleMessage.messageLevel()) {
+                    case TIP:
+                        Log.v(TAG, printable);
+                        break;
+                    case DEBUG:
+                        Log.d(TAG, printable);
+                        break;
+                    case LOG:
+                        Log.i(TAG, printable);
+                        break;
+                    case WARNING:
+                        Log.w(TAG, printable);
+                        break;
+                    case ERROR:
+                        Log.e(TAG, printable);
+                        break;
+                }
+                return super.onConsoleMessage(consoleMessage);
+            }
+        });
 
         final String viewerUrl = "file:///android_asset/pdf-js-1.8/web/viewer.html";
         final String localPdfUrl = "file:///android_asset/SamplePDFFile_5mb.pdf";
