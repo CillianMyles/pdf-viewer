@@ -77,7 +77,7 @@ public class PdfViewer extends AppCompatActivity {
 
         final String viewerUrl = "file:///android_asset/pdf-js-1.8/web/viewer.html";
         final String localPdfUrl = "file:///android_asset/SamplePDFFile_5mb.pdf";
-        final String onlinePdfUrl = "https://cdn.mozilla.net/pdf.js/helloworld.pdf"; // TODO: correct url error
+        final String onlinePdfUrl = "https://cdn.mozilla.net/pdfjs/helloworld.pdf";
         final String toBeEncoded = onlinePdfUrl;
 
         String encodedUrl = "";
